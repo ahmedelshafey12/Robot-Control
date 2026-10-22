@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoboControl – Robot Control Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ SVG ICON SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" fill="currentColor"/></symbol>
+  <symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59C2.6 9.42 2 14.46 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.41-1.41A2 2 0 0 1 9.83 16h4.34a2 2 0 0 1 1.42.59L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.55-.6-6.58-.68-7.26A4 4 0 0 0 17.32 5z" fill="currentColor" fill-opacity=".15"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" fill="currentColor" fill-opacity=".2"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-sensors" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9c3.9 3.9 3.9 10.2 0 14.1"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" fill="currentColor" fill-opacity=".2"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" fill-opacity=".2"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M12 20h.01M2 8.82a15 15 0 0 1 20 0M5 12.86a10 10 0 0 1 14 0M8.5 16.43a5 5 0 0 1 7 0"/></symbol>
+  <symbol id="i-bluetooth" viewBox="0 0 24 24"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4" /></symbol>
+  <symbol id="i-horn" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3zM11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M22 12h-4M6 12H2M12 6V2M12 22v-4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10M18.4 6.6a9 9 0 1 1-12.77.04"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 11v2"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+  <symbol id="i-engine" viewBox="0 0 24 24"><path d="M7 9h10l2 2h2v4h-2l-2 2H7l-2-2H3v-4h2zM10 9V6h4v3M12 6V4"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V5"/><circle cx="12" cy="4" r="1"/><circle cx="9" cy="14" r="1.3" fill="currentColor"/><circle cx="15" cy="14" r="1.3" fill="currentColor"/><path d="M2 13v3M22 13v3"/></symbol>
+  <symbol id="i-tri" viewBox="0 0 24 24"><path d="M12 5 21 18H3z" fill="currentColor" stroke="none"/></symbol>
+</svg>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Toggle menu"><svg class="ic"><use href="#i-menu"/></svg></button>
+
+  <div class="brand">
+    <svg class="ic brand-bot"><use href="#i-bot"/></svg>
+    <div>
+      <div class="brand-name">Robo<span>Control</span></div>
+      <div class="brand-sub">Robot Control Dashboard</div>
+    </div>
+  </div>
+
+  <div class="status-wrap">
+    <button class="status-pill" id="statusPill" aria-haspopup="true" aria-expanded="false">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Connected to Robot</span>
+      <span class="bars" id="signalBars"><i></i><i></i><i></i><i></i></span>
+      <span id="statusMode">Wi-Fi</span>
+      <svg class="ic chev"><use href="#i-chevron"/></svg>
+    </button>
+    <div class="menu" id="statusMenu" hidden>
+      <button data-act="wifi"><svg class="ic"><use href="#i-wifi"/></svg>Connect via Wi-Fi</button>
+      <button data-act="bluetooth"><svg class="ic"><use href="#i-bluetooth"/></svg>Connect via Bluetooth</button>
+      <button data-act="disconnect"><svg class="ic"><use href="#i-power"/></svg>Disconnect</button>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg class="ic"><use href="#i-sun"/></svg></button>
+    <button class="icon-btn" id="topSettings" aria-label="Settings"><svg class="ic"><use href="#i-gear"/></svg></button>
+    <button class="icon-btn power" id="powerBtn" aria-label="Disconnect and stop"><svg class="ic"><use href="#i-power"/></svg></button>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <nav>
+      <a href="#dashboard" data-nav="dashboard" class="active"><svg class="ic"><use href="#i-home"/></svg>Dashboard</a>
+      <a href="#control" data-nav="control"><svg class="ic"><use href="#i-gamepad"/></svg>Control</a>
+      <a href="#camera" data-nav="camera"><svg class="ic"><use href="#i-camera"/></svg>Camera</a>
+      <a href="#sensors" data-nav="sensors"><svg class="ic"><use href="#i-sensors"/></svg>Sensors</a>
+      <a href="#settings" data-nav="settings"><svg class="ic"><use href="#i-gear"/></svg>Settings</a>
+      <a href="#about" data-nav="about"><svg class="ic"><use href="#i-info"/></svg>About</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main id="main" data-view="dashboard">
+
+    <!-- Robot connection -->
+    <section class="card conn" data-views="dashboard control">
+      <h2><svg class="ic hl"><use href="#i-wifi"/></svg>Robot Connection</h2>
+      <div class="seg">
+        <button class="seg-btn active" data-mode="wifi"><svg class="ic"><use href="#i-wifi"/></svg>Wi-Fi</button>
+        <button class="seg-btn" data-mode="bluetooth"><svg class="ic"><use href="#i-bluetooth"/></svg>Bluetooth</button>
+      </div>
+      <div class="conn-line"><span class="dot" id="connDot"></span><span id="connText">Connected to Robot</span></div>
+      <dl class="kv">
+        <div><dt>IP Address:</dt><dd id="kvIp">192.168.4.1</dd></div>
+        <div><dt>SSID:</dt><dd id="kvSsid">RoboESP32</dd></div>
+        <div><dt>Status:</dt><dd><span class="tag" id="kvStatus">Connected</span></dd></div>
+      </dl>
+    </section>
+
+    <!-- Ultrasonic -->
+    <section class="card sensor" data-views="dashboard sensors">
+      <h2><svg class="ic hl"><use href="#i-sensors"/></svg>Front Ultrasonic Sensor Status<a href="#sensors" class="go" aria-label="Open sensors"><svg class="ic"><use href="#i-arrow"/></svg></a></h2>
+      <div class="gauge-box">
+        <svg class="gauge" viewBox="0 0 300 175" role="img" aria-label="Distance gauge">
+          <defs>
+            <linearGradient id="gg" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#14c8ff"/>
+              <stop offset=".3" stop-color="#19e08a"/>
+              <stop offset=".62" stop-color="#e8c42a"/>
+              <stop offset=".8" stop-color="#ff7a2a"/>
+              <stop offset="1" stop-color="#ff3030"/>
+            </linearGradient>
+          </defs>
+          <path d="M30 150 A120 120 0 0 1 270 150" class="g-track"/>
+          <path d="M30 150 A120 120 0 0 1 270 150" class="g-arc"/>
+          <circle id="gMarker" r="9" class="g-marker" cx="30" cy="150"/>
+          <text x="150" y="112" class="g-val" id="gVal">120</text>
+          <text x="150" y="138" class="g-unit">cm</text>
+          <text x="22" y="172" class="g-lim">0</text>
+          <text x="278" y="172" class="g-lim" text-anchor="end">400</text>
+        </svg>
+        <div class="safe" id="safeBadge"><svg class="ic"><use href="#i-check"/></svg><span>Safe Distance</span></div>
+      </div>
+    </section>
+
+    <!-- Battery -->
+    <section class="card batt" data-views="dashboard sensors">
+      <h2><svg class="ic hl"><use href="#i-battery"/></svg>Battery Status</h2>
+      <div class="bat-row">
+        <div class="bar"><i id="batFill" style="width:78%"></i></div>
+        <b id="batPct">78%</b>
+      </div>
+      <div class="mini-grid">
+        <div class="mini"><svg class="ic"><use href="#i-engine"/></svg><span>Motor Status</span><em class="pill ok" id="motorPill"><i class="dot"></i>Ready</em></div>
+        <div class="mini"><svg class="ic hl"><use href="#i-wifi"/></svg><span>Signal Strength</span><em class="pill ok" id="sigPill"><i class="dot"></i>Good</em></div>
+      </div>
+    </section>
+
+    <!-- Camera -->
+    <section class="card camera" data-views="dashboard camera">
+      <h2><svg class="ic"><use href="#i-camera"/></svg>Live Camera</h2>
+      <div class="cam" id="camBox">
+        <div class="cam-bg"></div>
+        <img id="camImg" alt="Live camera stream" hidden>
+        <span class="soon" id="soonBadge"><svg class="ic"><use href="#i-clock"/></svg>Coming Soon</span>
+        <div class="cam-msg" id="camMsg">
+          <svg class="ic big"><use href="#i-camera"/></svg>
+          <h3>Coming Soon</h3>
+          <p>Live streaming will be enabled soon</p>
+        </div>
+        <div class="cam-bar">
+          <button class="cam-play" id="camPlay" aria-label="Start camera"><svg class="ic"><use href="#i-play"/></svg></button>
+          <span id="camLabel">Start Camera</span>
+          <button class="cam-full" id="camFull" aria-label="Fullscreen"><svg class="ic"><use href="#i-expand"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Movement -->
+    <section class="card move" data-views="dashboard control">
+      <h2><svg class="ic"><use href="#i-gamepad"/></svg>Movement Controls
+        <button class="help" id="helpBtn" aria-label="Keyboard shortcuts"><svg class="ic"><use href="#i-help"/></svg></button></h2>
+      <div class="move-body">
+        <div class="dpad">
+          <button class="dbtn up"    data-dir="forward"  aria-label="Forward"><svg class="ic"><use href="#i-tri"/></svg></button>
+          <button class="dbtn left"  data-dir="left"     aria-label="Left"><svg class="ic"><use href="#i-tri"/></svg></button>
+          <button class="dbtn stop"  data-dir="stop"     aria-label="Stop"><i></i></button>
+          <button class="dbtn right" data-dir="right"    aria-label="Right"><svg class="ic"><use href="#i-tri"/></svg></button>
+          <button class="dbtn down"  data-dir="backward" aria-label="Backward"><svg class="ic"><use href="#i-tri"/></svg></button>
+        </div>
+        <div class="speed">
+          <h4>Speed</h4>
+          <button class="spd active" data-speed="low"><svg class="ic"><use href="#i-gauge"/></svg>Low</button>
+          <button class="spd" data-speed="medium"><svg class="ic"><use href="#i-gauge"/></svg>Medium</button>
+          <button class="spd" data-speed="high"><svg class="ic"><use href="#i-gauge"/></svg>High</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional commands -->
+    <section class="card cmds" data-views="dashboard control">
+      <h2><svg class="ic"><use href="#i-gear"/></svg>Additional Commands</h2>
+      <div class="cmd-row">
+        <button class="cmd" id="cmdLights"><svg class="ic"><use href="#i-bulb"/></svg><span>Turn Lights On</span></button>
+        <button class="cmd" id="cmdHorn"><svg class="ic"><use href="#i-horn"/></svg><span>Sound Horn</span></button>
+        <button class="cmd" id="cmdCal"><svg class="ic"><use href="#i-target"/></svg><span>Calibrate Sensor</span></button>
+        <button class="cmd" id="cmdReset"><svg class="ic"><use href="#i-refresh"/></svg><span>Reset</span></button>
+        <button class="cmd shot" id="cmdShot"><svg class="ic"><use href="#i-camera"/></svg><span>Screenshot</span></button>
+      </div>
+    </section>
+
+    <!-- Distance history (Sensors view) -->
+    <section class="card history" data-views="sensors">
+      <h2><svg class="ic hl"><use href="#i-sensors"/></svg>Distance History</h2>
+      <canvas id="histCanvas" height="220"></canvas>
+    </section>
+
+    <!-- Settings -->
+    <section class="card settings-card" data-views="settings">
+      <h2><svg class="ic"><use href="#i-gear"/></svg>Settings</h2>
+      <form id="settingsForm" class="form" autocomplete="off">
+        <label>Robot IP address<input id="setIp" type="text" inputmode="decimal" placeholder="192.168.4.1"></label>
+        <label>Network name (SSID)<input id="setSsid" type="text" placeholder="RoboESP32"></label>
+        <label>Camera stream URL<input id="setCam" type="url" placeholder="http://192.168.4.1:81/stream"></label>
+        <label>Stop-before distance (cm)<input id="setSafe" type="number" min="5" max="200" step="5"></label>
+        <label class="check"><input id="setSim" type="checkbox"><span>Simulation mode (no real robot needed)</span></label>
+        <div class="form-actions">
+          <button type="submit" class="cmd shot">Save settings</button>
+          <button type="button" class="cmd" id="testConn">Test connection</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- About -->
+    <section class="card about-card" data-views="about">
+      <h2><svg class="ic"><use href="#i-info"/></svg>About RoboControl</h2>
+      <p>RoboControl is a browser dashboard for driving an ESP32 robot over Wi-Fi. It shows the front ultrasonic distance, battery level and connection state, and sends movement and utility commands to the robot.</p>
+      <p>Version <b>Final 6</b>. Built with plain HTML, CSS and JavaScript, so it runs from any folder with no installation.</p>
+      <p class="muted">Keyboard: arrow keys or W A S D to drive, Space to stop, L for lights, H for horn.</p>
+    </section>
+
+  </main>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script src="script.js"></script>
+</body>
+</html>
